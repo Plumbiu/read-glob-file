@@ -1,5 +1,5 @@
 {
-	"name": "@plumbiu/read-glob-file",
+	"name": "read-glob-file",
 	"version": "1.0.0",
 	"description": "",
 	"main": "src/main.ts",
