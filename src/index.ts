@@ -57,10 +57,10 @@ function useReadFile(p: string, filename: string, options: Options) {
 	return result
 }
 
-export function readGlobFile(p: string, filename: string, options?: Options) {
+export function readGlobFile(filepath: string, filename: string, options?: Options) {
 	options = options ?? {
 		depth: Number.POSITIVE_INFINITY,
 		type: 'string',
 	}
-	return useReadFile(p, filename, options)
+	return useReadFile(filepath, filename, options)
 }
