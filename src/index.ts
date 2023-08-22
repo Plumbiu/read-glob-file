@@ -10,13 +10,16 @@ interface Options {
 	name?: string
 }
 
-function useReadFile(p: string, filename: string, options: Options) {
+export function readGlobFile(p: string, filename: string, {
+	depth = Number.POSITIVE_INFINITY,
+	type = 'string',
+	excludedDir = undefined,
+	name = undefined
+}: Options) {
 	const result: { [key: string]: string | object } = {}
-	const filter = createFilter(undefined, options?.excludedDir, {
+	const filter = createFilter(undefined, excludedDir, {
 		resolve: false,
 	})
-	let depth = options?.depth ?? Number.POSITIVE_INFINITY
-	const type = options?.type ?? 'string'
 	function readGlob(p: string) {
 		if (depth <= 0) {
 			return
@@ -34,9 +37,9 @@ function useReadFile(p: string, filename: string, options: Options) {
 				if (type === 'string') {
 					result[normalPath] = content.toString()
 				} else if (type === 'json') {
-					const name = options?.name ?? normalPath
+					const key = name ?? normalPath
 					const jsonContent = JSON.parse(content)
-					result[jsonContent[name] ?? normalPath] = jsonContent
+					result[jsonContent[key] ?? normalPath] = jsonContent
 				} else {
 					throw new Error('暂不支持此类型')
 				}
@@ -55,12 +58,4 @@ function useReadFile(p: string, filename: string, options: Options) {
 	}
 	readGlob(p)
 	return result
-}
-
-export function readGlobFile(filepath: string, filename: string, options?: Options) {
-	options = options ?? {
-		depth: Number.POSITIVE_INFINITY,
-		type: 'string',
-	}
-	return useReadFile(filepath, filename, options)
 }
