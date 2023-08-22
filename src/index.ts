@@ -12,7 +12,9 @@ interface Options {
 
 function useReadFile(p: string, filename: string, options: Options) {
 	const result: { [key: string]: string | object } = {}
-	const filter = createFilter(undefined, options?.excludedDir, { resolve: false })
+	const filter = createFilter(undefined, options?.excludedDir, {
+		resolve: false,
+	})
 	let depth = options?.depth ?? Number.POSITIVE_INFINITY
 	const type = options?.type ?? 'string'
 	function readGlob(p: string) {
@@ -38,7 +40,7 @@ function useReadFile(p: string, filename: string, options: Options) {
 				} else {
 					throw new Error('暂不支持此类型')
 				}
-				depth --
+				depth--
 			}
 			const stat = fs.lstatSync(fileDir)
 			if (stat.isDirectory()) {
@@ -58,7 +60,7 @@ function useReadFile(p: string, filename: string, options: Options) {
 export function readGlobFile(p: string, filename: string, options?: Options) {
 	options = options ?? {
 		depth: Number.POSITIVE_INFINITY,
-		type: 'string'
+		type: 'string',
 	}
 	return useReadFile(p, filename, options)
 }
